@@ -5,7 +5,7 @@ import { encryptTransposition, decryptTransposition } from './TranspositionCiphe
 function App() {
     const [inputText, setInputText] = useState('');
     const [outputText, setOutputText] = useState('');
-    const key = 2; // Puedes ajustar la clave según tus necesidades
+    const key = 2; // Puedes ajustar la clave a tu gusto como en el ejemplo principal de html
 
     const handleEncrypt = () => {
         const encryptedText = encryptTransposition(inputText, key);
