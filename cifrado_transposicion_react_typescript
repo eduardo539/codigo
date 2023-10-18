@@ -1,4 +1,4 @@
-// App.tsx
+//Este es el index
 import React, { useState } from 'react';
 import { encryptTransposition, decryptTransposition } from './TranspositionCipher';
 
@@ -28,3 +28,60 @@ function App() {
 }
 
 export default App;
+
+
+
+
+//Estas son las funciones aplicadas para el metodo de cifrado por transposicion
+function encryptTransposition(message: string, key: number): string {
+    const numRows = Math.ceil(message.length / key);
+    const matrix: string[][] = new Array(numRows).fill(null).map(() => new Array(key));
+    let index = 0;
+
+    for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < key; j++) {
+            if (index < message.length) {
+                matrix[i][j] = message[index];
+                index++;
+            }
+        }
+    }
+
+    let cipherText = '';
+    for (let j = 0; j < key; j++) {
+        for (let i = 0; i < numRows; i++) {
+            if (matrix[i][j]) {
+                cipherText += matrix[i][j];
+            }
+        }
+    }
+
+    return cipherText;
+}
+
+function decryptTransposition(ciphertext: string, key: number): string {
+    const numRows = Math.ceil(ciphertext.length / key);
+    const numCols = key;
+    const matrix: string[][] = new Array(numRows).fill(null).map(() => new Array(numCols));
+    let index = 0;
+
+    for (let j = 0; j < numCols; j++) {
+        for (let i = 0; i < numRows; i++) {
+            if (index < ciphertext.length) {
+                matrix[i][j] = ciphertext[index];
+                index++;
+            }
+        }
+    }
+
+    let plainText = '';
+    for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
+            if (matrix[i][j]) {
+                plainText += matrix[i][j];
+            }
+        }
+    }
+
+    return plainText;
+}
