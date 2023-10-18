@@ -1,0 +1,30 @@
+// App.tsx
+import React, { useState } from 'react';
+import { encryptTransposition, decryptTransposition } from './TranspositionCipher';
+
+function App() {
+    const [inputText, setInputText] = useState('');
+    const [outputText, setOutputText] = useState('');
+    const key = 2; // Puedes ajustar la clave según tus necesidades
+
+    const handleEncrypt = () => {
+        const encryptedText = encryptTransposition(inputText, key);
+        setOutputText(encryptedText);
+    };
+
+    const handleDecrypt = () => {
+        const decryptedText = decryptTransposition(outputText, key);
+        setOutputText(decryptedText);
+    };
+
+    return (
+        <div>
+            <textarea value={inputText} onChange={(e) => setInputText(e.target.value)} />
+            <button onClick={handleEncrypt}>Cifrar</button>
+            <button onClick={handleDecrypt}>Descifrar</button>
+            <textarea value={outputText} readOnly />
+        </div>
+    );
+}
+
+export default App;
