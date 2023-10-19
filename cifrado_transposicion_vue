@@ -1,0 +1,114 @@
+<template>
+  <div class="cuerpo">
+    <h1>Cifrado por Transposición</h1>
+    <div class="form">
+      <div>
+        <label for="message">Mensaje: </label>
+        <input tupe="text" v-model="message" id="message" placeholder="Ingresa un mensaje">
+      </div>
+
+      <div>
+        <label for="key">Clave de transposición: </label>
+        <input v-model="key" id="key" type="number" min="1" placeholder="Solo números de 1 digito" />
+      </div>
+
+      <button @click="encrypt">Cifrar Mensaje</button>
+    </div>
+
+    <div class="result" v-if="encryptedMessage">
+      <h2>Mensaje Cifrado: </h2>
+      <p>{{ encryptedMessage }}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      message: "",
+      key: 3, // La clave determina cómo se reorganizarán las letras
+      encryptedMessage: ""
+    };
+  },
+  methods: {
+    encrypt() {
+      this.encryptedMessage = this.transpositionCipher(this.message, this.key);
+    },
+    transpositionCipher(message, key) {
+      const sanitizedMessage = message.replace(/\s/g, ""); // Eliminar espacios
+      const numRows = Math.ceil(sanitizedMessage.length / key);
+      let grid = new Array(numRows);
+
+      // Inicializar una matriz de dos dimenciones
+      for (let i = 0; i < numRows; i++) {
+        grid[i] = new Array(key);
+      }
+
+      let messageIndex = 0;
+
+      // Se llena la matriz con el mensaje
+      for (let row = 0; row < numRows; row++) {
+        for (let col = 0; col < key; col++) {
+          if (messageIndex < sanitizedMessage.length) {
+            grid[row][col] = sanitizedMessage[messageIndex];
+            messageIndex++;
+          }
+        }
+      }
+
+      // Se construlle el mensaje cifrado leyendo la matriz por columnas
+      let encryptedMessage = "";
+      for (let col = 0; col < key; col++) {
+        for (let row = 0; row < numRows; row++) {
+          if (grid[row][col]) {
+            encryptedMessage += grid[row][col];
+          }
+        }
+      }
+
+      return encryptedMessage;
+    }
+  }
+};
+</script>
+
+<style>
+
+.form {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.h1{
+  text-align: center;
+}
+.label{
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+input {
+  width: 400px;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 7px;
+}
+
+button {
+  background-color: #007BFF;
+  color: #000000;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+.result {
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+</style>
